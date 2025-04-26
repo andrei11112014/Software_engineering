@@ -1,4 +1,3 @@
-
 import random, sys
 
 # Задаем значения констант:
@@ -103,6 +102,7 @@ def main():
 
         # Обработка действий игрока:
         print('Ставка:', bet)
+        initialBet = bet  # Сохраняем первоначальную ставку
         while True:  # Выполняем цикл до тех пор, пока игрок не скажет "хватит" или у него не будет перебор.
             displayHands(playerHand, dealerHand, False)
             print()
@@ -122,7 +122,21 @@ def main():
                 newCard = deck.pop()
                 print('Вы получили {} из {}.'.format(newCard[0], newCard[1]))
                 playerHand.append(newCard)
-                break  # Завершаем цикл, так как игрок может взять только одну карту
+                displayHands(playerHand, dealerHand, False)
+                # Сразу проверяем перебор
+                if getHandValue(playerHand) > 21:
+                    break  # Перебор — сразу заканчиваем ход игрока
+                # После дабла спрашиваем, хочет ли игрок утроить:
+                if money >= initialBet:
+                    choice = input('Хотите утроить ставку и взять еще одну карту? (ДА/НЕТ) ').upper()
+                    if choice == 'ДА':
+                        bet += initialBet  # Прибавляем начальную ставку
+                        print('Ставка увеличена до {}.'.format(bet))
+                        newCard = deck.pop()
+                        print('Вы получили {} из {}.'.format(newCard[0], newCard[1]))
+                        playerHand.append(newCard)
+                        displayHands(playerHand, dealerHand, False)
+                break  # После дабл-дауна и трипл-дауна ход игрока заканчивается
 
             if move in ('Х', 'Д'):
                 # "хит" или "дабл-даун": игрок берет еще одну карту.
