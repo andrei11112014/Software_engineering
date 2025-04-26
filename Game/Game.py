@@ -1,3 +1,4 @@
+
 import random, sys
 
 # Задаем значения констант:
@@ -113,13 +114,15 @@ def main():
             # Получаем ход игрока: Х, С или Д:
             move = getMove(playerHand, money - bet)
 
-            # Обработка действий игрока:
-            if move == 'Д':
-                # Игрок удваивает, он может увеличить ставку:
-                additionalBet = getBet(min(bet, (money - bet)))
-                bet += additionalBet
+            
+            # Игрок удваивает, он может увеличить ставку:
+            if move == 'Д' and money >= bet:
+                bet *= 2  # Удваиваем ставку
                 print('Ставка увеличена до {}.'.format(bet))
-                print('Ставка:', bet)
+                newCard = deck.pop()
+                print('Вы получили {} из {}.'.format(newCard[0], newCard[1]))
+                playerHand.append(newCard)
+                break  # Завершаем цикл, так как игрок может взять только одну карту
 
             if move in ('Х', 'Д'):
                 # "хит" или "дабл-даун": игрок берет еще одну карту.
