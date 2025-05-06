@@ -25,6 +25,10 @@ playerHand = []
 showDealerHand = False
 bet = 0
 messages = []
+buttonHit = pygame.Rect(360, 415, 100, 100)
+buttonStand = pygame.Rect(455, 415, 100, 100)
+buttonDouble = pygame.Rect(550, 415, 100, 100)
+buttonEnter = pygame.Rect(360, 515, 100, 100)
 
 def main():
     loadAssets()
@@ -139,12 +143,33 @@ def main():
                     messages.append('Но вы выиграли страховку! Выплата 2:1')
                     messages.append('Нажмите Enter, чтобы продолжить...')
                     screenUpdate()
+
+                    move = ''
+                    while (move != 'Enter'):
+                        screenUpdate('Enter')
+                        for event in pygame.event.get():
+                            if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                                move = 'Enter'
+                    screenUpdate('Enter')
+
+
                     money += insuranceBet * 3  # +3 потому что 2:1 от страховки + возврат самой страховки
 
             screenUpdate()
             messagesClear()
             messages.append('Нажмите Enter, чтобы продолжить...')
-            input()
+            #input()
+
+            move = ''
+            while (move != 'Enter'):
+                screenUpdate('Enter')
+                for event in pygame.event.get():
+                    if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(
+                            pygame.mouse.get_pos())) or (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                        move = 'Enter'
+            screenUpdate()
+
             screenUpdate()
             print('\n\n')
             continue
@@ -157,7 +182,17 @@ def main():
             messages.append('У дилера нет блэкджека. Вы потеряли страховку')
             messages.append('Нажмите Enter, чтобы продолжить...')
             screenUpdate()
-            input('Нажмите Enter, чтобы продолжить...')
+            move = ''
+            move = ''
+            while (move != 'Enter'):
+                screenUpdate('Enter')
+                for event in pygame.event.get():
+                    if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(
+                            pygame.mouse.get_pos())) or (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                        move = 'Enter'
+            screenUpdate()
+            #input('Нажмите Enter, чтобы продолжить...')
             screenUpdate()
             print('\n\n')
 
@@ -166,7 +201,16 @@ def main():
             messagesClear()
             messages.append('Нажмите Enter, чтобы продолжить...')
             screenUpdate()
-            input('Нажмите Enter, чтобы продолжить...')
+            move = ''
+            while (move != 'Enter'):
+                screenUpdate()
+                for event in pygame.event.get():
+                    if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(
+                            pygame.mouse.get_pos())) or (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                        move = 'Enter'
+            screenUpdate('Enter')
+            #input('Нажмите Enter, чтобы продолжить...')
             screenUpdate()
             print('\n\n')
             continue
@@ -231,7 +275,15 @@ def main():
             messagesClear()
             messages.append('Нажмите Enter, чтобы продолжить...')
             screenUpdate()
-            input('Нажмите Enter, чтобы продолжить...')
+            #input('Нажмите Enter, чтобы продолжить...')
+            move = ''
+            while (move != 'Enter'):
+                screenUpdate('Enter')
+                for event in pygame.event.get():
+                    if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(
+                            pygame.mouse.get_pos())) or (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                        move = 'Enter'
             screenUpdate()
             print('\n\n')
 
@@ -259,11 +311,22 @@ def main():
             message = 'Ничья, ставка возвращена.'
             print('Ничья, ставка возвращена.')
 
+        bet = 0
+
         messagesClear()
         messages.append(message)
         messages.append('Нажмите Enter, чтобы продолжить...')
         screenUpdate()
-        input('Нажмите Enter, чтобы продолжить...')
+       # input('Нажмите Enter, чтобы продолжить...')
+        move = ''
+        while (move != 'Enter'):
+            screenUpdate('Enter')
+            for event in pygame.event.get():
+                if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonEnter.collidepoint(
+                        pygame.mouse.get_pos())) or (
+                        event.type == pygame.KEYDOWN and event.key == pygame.K_KP_ENTER) or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
+                    move = 'Enter'
+        screenUpdate()
         messages.clear()
         screenUpdate()
         print('\n\n')
@@ -401,14 +464,18 @@ def loadAssets():
     sprites.append(pygame.image.load("..\\Cards\\Spades 12.png"))
     sprites.append("Spades_Q")
 
-def screenUpdate(message = ''):
+def screenUpdate(moves = [], value = 0):
     global screen
     global dealerHand
     global showDealerHand
     global messages
 
+    global buttonHit
+    global buttonStand
+    global buttonDouble
+    global buttonEnter
+
     screen.blit(sprites[sprites.index("Backround") - 1], (0, 0))
-    #screen.blit(pygame.transform.scale(sprites[sprites.index("Field") - 1], (490, 1800)), (755, -600))
     screen.blit(sprites[sprites.index("Message_backround") - 1], (800, 0))
     screen.blit(pygame.transform.scale(sprites[sprites.index("Field") - 1], (150, 140)), (142, 398))
     screen.blit(pygame.transform.scale(sprites[sprites.index("Money") - 1], (50, 50)), (280, 440))
@@ -417,7 +484,7 @@ def screenUpdate(message = ''):
     screen.blit(pygame.transform.scale(sprites[sprites.index("Money") - 1], (50, 50)), (280, 490))
     screen.blit(font.render('Ставка:  ' + bet.__str__(), True, (255, 255, 255)), (60, 500))
 
-    xPosition = 820
+    xPosition = 830
     yPosition = 50
 
     i = 0
@@ -492,6 +559,49 @@ def screenUpdate(message = ''):
         screen.blit(sprites[sprites.index(name) - 1], (xPosition, yPosition))
         xPosition += 120
 
+
+    screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (100, 100)), (360, 415))
+    screen.blit(fontMessage.render('(Х)ит', True, (255, 255, 255)), (395, 454))
+    screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (100, 100)), (455, 415))
+    screen.blit(fontMessage.render('(С)тенд', True, (255, 255, 255)), (480, 454))
+    screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (100, 100)), (550, 415))
+    screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (100, 100)), (360, 470))
+
+    if ('(Д)абл-даун' in moves):
+        screen.blit(fontMessage.render('(Д)абл-даун', True, (255, 255, 255)), (563, 454))
+
+    if ('(Д)абл-даун' not in moves):
+        screen.blit(fontMessage.render('', True, (255, 255, 255)), (563, 454))
+
+    if ('Enter' in moves):
+        screen.blit(fontMessage.render('Enter', True, (255, 255, 255)), (395, 510))
+
+    if ('Enter' not in moves):
+        screen.blit(fontMessage.render('', True, (255, 255, 255)), (395, 510))
+
+    if buttonHit.collidepoint(pygame.mouse.get_pos()):
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (110, 110)), (355, 410))
+        screen.blit(fontMessage.render('(Х)ит', True, (255, 255, 255)), (395, 454))
+
+    if buttonStand.collidepoint(pygame.mouse.get_pos()):
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (110, 110)), (450, 410))
+        screen.blit(fontMessage.render('(С)тенд', True, (255, 255, 255)), (480, 454))
+
+    if buttonDouble.collidepoint(pygame.mouse.get_pos()) and '(Д)абл-даун' in moves:
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (110, 110)), (545, 410))
+        screen.blit(fontMessage.render('(Д)абл-даун', True, (255, 255, 255)), (563, 454))
+
+    if buttonEnter.collidepoint(pygame.mouse.get_pos()) and 'Enter' in moves:
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (110, 110)), (355, 465))
+        screen.blit(fontMessage.render('Enter', True, (255, 255, 255)), (395, 510))
+
+    if ('Ставка' in moves):
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Backround") - 1], (500, 300)), (150, 120))
+        screen.blit(font.render("Введите ставку", True, (255, 255, 255)), (300, 200))
+        screen.blit(font.render(value.__str__(), True,  (255, 255, 255)), (300, 270))
+
+
+
     pygame.display.flip()
 
 def messagesClear():
@@ -500,22 +610,36 @@ def messagesClear():
         messages.clear()
 
 def getBet(maxBet):
+    value = ""
     """Спрашиваем у игрока, сколько он ставит на этот раунд."""
     while True:  # Продолжаем спрашивать, пока не будет введено допустимое значение.
-        print('Сколько вы ставите? (1-{}, or ВЫХОД)'.format(maxBet))
-        screenUpdate()
-        bet = input('> ').upper().strip()
-        screenUpdate()
-        if bet == 'ВЫХОД':
-            print('Спасибо за игру!')
-            sys.exit()
+        # print('Сколько вы ставите? (1-{}, or ВЫХОД)'.format(maxBet))
+        # screenUpdate()
+        # bet = input('> ').upper().strip()
+        # screenUpdate()
+        # if bet == 'ВЫХОД':
+        #     print('Спасибо за игру!')
+        #     sys.exit()
+        screenUpdate('Ставка', value)
+        for event in pygame.event.get():
+            if (event.type == pygame.KEYDOWN):
+                if (event.key == pygame.K_RETURN and value != "" and value != "0"):
+                    return int(value)
+                elif (event.key == pygame.K_BACKSPACE):
+                    value = value[:-1]
+                else:
+                    if (event.unicode.isdigit()):
+                        value += event.unicode
+                        if (int(value) > maxBet):
+                            value = value[:-1]
 
-        if not bet.isdecimal():
-            continue  # Если игрок не ответил — спрашиваем снова.
+       # if not bet.isdecimal():
+         #   continue  # Если игрок не ответил — спрашиваем снова.
 
-        bet = int(bet)
-        if 1 <= bet <= maxBet:
-            return bet  # Игрок ввел допустимое значение ставки.
+        #bet = int(bet)
+        # bet = int(value)
+        # if 1 <= bet <= maxBet:
+        #     return bet  # Игрок ввел допустимое значение ставки.
 
 
 def getDeck():
@@ -600,6 +724,7 @@ def displayCards(cards):
 
 
 def getMove(playerHand, money):
+    global buttonHit
     """Спрашиваем, какой ход хочет сделать игрок, и возвращаем 'Х', если он
     хочет взять еще карту, 'С', если ему хватит, и 'Д', если он удваивает."""
     while True:  # Продолжаем итерации цикла, пока игрок не сделает допустимый ход.
@@ -613,9 +738,19 @@ def getMove(playerHand, money):
 
         # Получаем ход игрока:
         movePrompt = ', '.join(moves) + '> '
-        screenUpdate()
-        move = input(movePrompt).upper()
-        screenUpdate()
+        screenUpdate(moves)
+        #move = input(movePrompt).upper()
+        move = 'q'
+        while (move == 'q'):
+            screenUpdate(moves)
+            for event in pygame.event.get():
+                if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonHit.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_x):
+                    move = 'Х'
+                if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonStand.collidepoint(pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_c):
+                    move = 'С'
+                if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonDouble.collidepoint(pygame.mouse.get_pos()) and '(Д)абл-даун' in moves) or (event.type == pygame.KEYDOWN and event.key == pygame.K_d  and '(Д)абл-даун' in moves):
+                    move = 'Д'
+        screenUpdate(moves)
         if move in ('Х', 'С'):
             return move  # Игрок сделал допустимый ход.
         if move == 'Д' and '(Д)абл-даун' in moves:
@@ -624,4 +759,4 @@ def getMove(playerHand, money):
 
 # Если программа не импортируется, а запускается, производим запуск:
 if __name__ == '__main__':
-    main()
+   main()
