@@ -29,6 +29,8 @@ buttonHit = pygame.Rect(360, 415, 100, 100)
 buttonStand = pygame.Rect(455, 415, 100, 100)
 buttonDouble = pygame.Rect(550, 415, 100, 100)
 buttonEnter = pygame.Rect(360, 515, 100, 100)
+buttonYes = pygame.Rect(220, 220, 150, 150)
+buttonNo = pygame.Rect(420, 220, 150, 150)
 
 def main():
     loadAssets()
@@ -73,6 +75,7 @@ def main():
         # Проверяем возможность страховки/равных денег
         insuranceBet = 0
         evenMoneyTaken = False
+
         if dealerHand[0][0] == 'A':  # Если у дилера туз
             showDealerHand = False
             displayHands(playerHand, dealerHand, False)
@@ -86,7 +89,19 @@ def main():
                 messages.append('Равные деньги" — это страховка 1:1 вместо стандартных 3:2')
                 messages.append('Хотите получить "равные деньги"?')
                 screenUpdate()
-                choice = input('Хотите получить "равные деньги"? (ДА/НЕТ)').upper()
+                #choice = input('Хотите получить "равные деньги"? (ДА/НЕТ)').upper()
+
+                choice = "q"
+                while (choice != "Да" and choice != "Нет"):
+                    screenUpdate('Равные деньги')
+                    for event in pygame.event.get():
+                        if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonYes.collidepoint(
+                                pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_y):
+                            choice = 'Да'
+                        if (event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and buttonNo.collidepoint(
+                                pygame.mouse.get_pos())) or (event.type == pygame.KEYDOWN and event.key == pygame.K_n):
+                            choice = 'Нет'
+
                 screenUpdate()
                 if choice == 'ДА':
                     evenMoneyTaken = True
@@ -474,6 +489,8 @@ def screenUpdate(moves = [], value = 0):
     global buttonStand
     global buttonDouble
     global buttonEnter
+    global buttonYes
+    global buttonNo
 
     screen.blit(sprites[sprites.index("Backround") - 1], (0, 0))
     screen.blit(sprites[sprites.index("Message_backround") - 1], (800, 0))
@@ -599,6 +616,18 @@ def screenUpdate(moves = [], value = 0):
         screen.blit(pygame.transform.scale(sprites[sprites.index("Backround") - 1], (500, 300)), (150, 120))
         screen.blit(font.render("Введите ставку", True, (255, 255, 255)), (300, 200))
         screen.blit(font.render(value.__str__(), True,  (255, 255, 255)), (300, 270))
+
+    if ('Равные деньги' in moves):
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Backround") - 1], (500, 300)), (150, 120))
+        screen.blit(font.render('Хотите получить "равные деньги"?', True, (255, 255, 255)), (185, 200))
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (150, 150)), (220, 220))
+        if buttonYes.collidepoint(pygame.mouse.get_pos()):
+            screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (180, 180)), (205, 205))
+        screen.blit(fontPlayers.render('Да', True, (255, 255, 255)), (280, 280))
+        screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (150, 150)), (420, 220))
+        if buttonNo.collidepoint(pygame.mouse.get_pos()):
+            screen.blit(pygame.transform.scale(sprites[sprites.index("Button") - 1], (180, 180)), (405, 205))
+        screen.blit(fontPlayers.render('Нет', True, (255, 255, 255)), (480, 280))
 
 
 
